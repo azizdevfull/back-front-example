@@ -9,7 +9,9 @@ const app = createApp(App)
 
 app.use(router)
 app.use(VueToast, {
-    position: 'top-right',
-    duration: 5000,
+    position: 'top-right', // Change position
+    duration: 3000, // Change duration
+    queue: true, // Enable queue
+    pauseOnHover: true, // Pause on hover
 })
 app.mount('#app')
