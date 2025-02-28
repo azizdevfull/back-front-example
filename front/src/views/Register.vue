@@ -1,23 +1,33 @@
 <!-- src/views/Register.vue -->
 <template>
-    <div>
-        <h2>Register</h2>
-        <form @submit.prevent="register">
+    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Register</h2>
+        <form @submit.prevent="register" class="space-y-4">
             <div>
-                <input v-model="name" type="text" placeholder="Name" required>
-                <span class="error" v-if="errors.name">{{ errors.name[0] }}</span>
+                <input v-model="name" type="text" placeholder="Name" required
+                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <span v-if="errors.name" class="text-red-500 text-sm mt-1 block">{{ errors.name[0] }}</span>
             </div>
             <div>
-                <input v-model="email" type="email" placeholder="Email" required>
-                <span class="error" v-if="errors.email">{{ errors.email[0] }}</span>
+                <input v-model="email" type="email" placeholder="Email" required
+                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <span v-if="errors.email" class="text-red-500 text-sm mt-1 block">{{ errors.email[0] }}</span>
             </div>
             <div>
-                <input v-model="password" type="password" placeholder="Password" required>
-                <span class="error" v-if="errors.password">{{ errors.password[0] }}</span>
+                <input v-model="password" type="password" placeholder="Password" required
+                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <span v-if="errors.password" class="text-red-500 text-sm mt-1 block">{{ errors.password[0] }}</span>
             </div>
-            <button type="submit">Register</button>
+            <button type="submit"
+                class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200">
+                Register
+            </button>
         </form>
-        <router-link to="/login">Already have an account? Login</router-link>
+        <p class="mt-4 text-center">
+            <router-link to="/login" class="text-blue-500 hover:underline">
+                Already have an account? Login
+            </router-link>
+        </p>
     </div>
 </template>
 
@@ -41,7 +51,7 @@ export default {
     },
     methods: {
         async register() {
-            this.errors = {} // Clear previous errors
+            this.errors = {}
             try {
                 const response = await this.api.post('/register', {
                     name: this.name,
@@ -53,10 +63,8 @@ export default {
                 this.$router.push('/')
             } catch (error) {
                 if (error.response && error.response.status === 422) {
-                    // Handle validation errors
                     this.errors = error.response.data.errors
                 } else {
-                    // Handle other errors
                     alert('Registration failed: ' + (error.response?.data?.message || 'Unknown error'))
                 }
             }
@@ -64,36 +72,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.error {
-    color: red;
-    font-size: 0.8em;
-    margin-top: 5px;
-    display: block;
-}
-
-div {
-    margin-bottom: 15px;
-}
-
-input {
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    padding: 8px;
-}
-
-button {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-</style>
