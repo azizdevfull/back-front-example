@@ -5,12 +5,12 @@
     <div class="bg-gray-50 p-4 rounded-md">
       <p class="text-gray-700">User: <span class="font-semibold">{{ user?.email }}</span></p>
     </div>
-    <button @click="logout" class="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
+    <button @click="logout"
+      class="mt-4 w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-200">
       Logout
     </button>
   </div>
 </template>
-
 
 <script>
 import axios from 'axios'
@@ -39,12 +39,16 @@ export default {
     } catch (error) {
       localStorage.removeItem('token')
       this.$router.push('/login')
+      this.$toast.error('Session expired, please login again')
     }
   },
   methods: {
     async logout() {
       try {
-        await this.api.delete('/logout')
+        const response = await this.api.delete('/logout')
+        this.$toast.success(response.data.message)
+      } catch (error) {
+        this.$toast.error('Logout failed')
       } finally {
         localStorage.removeItem('token')
         this.$router.push('/login')

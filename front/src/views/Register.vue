@@ -60,12 +60,15 @@ export default {
                 })
                 localStorage.setItem('token', response.data.token)
                 this.api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+
+                this.$toast.success(response.data.message)
                 this.$router.push('/')
             } catch (error) {
                 if (error.response && error.response.status === 422) {
                     this.errors = error.response.data.errors
+                    this.$toast.error('Please fix the form errors')
                 } else {
-                    alert('Registration failed: ' + (error.response?.data?.message || 'Unknown error'))
+                    this.$toast.error(error.response?.data?.message || 'Registration failed')
                 }
             }
         }

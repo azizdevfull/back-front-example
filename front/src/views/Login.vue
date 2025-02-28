@@ -49,9 +49,11 @@ export default {
                 })
                 localStorage.setItem('token', response.data.token)
                 this.api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+
+                this.$toast.success(response.data.message)
                 this.$router.push('/')
             } catch (error) {
-                alert('Login failed: ' + error.response.data.message)
+                this.$toast.error(error.response?.data?.message || 'Login failed')
             }
         }
     }
